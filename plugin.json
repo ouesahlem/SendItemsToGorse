@@ -1,19 +1,17 @@
 {
-    "name": "<TODO: your plugin name>",
-    "url": "<TODO: Your Plugin URL here>",
-    "description": "<TODO: Your Plugin description here>",
+    "name": "Send items to Gorse",
+    "url": "https://github.com/ouesahlem/SendItemsToGorse",
+    "description": "Export items from PostHog events into Gorse",
     "main": "index.js",
     "posthogVersion": ">= 1.25.0",
     "config": [
         {
-            "markdown": "<TODO: your plugin config, remove if none>"
-        },
-        {
-            "key": "greeting",
-            "name": "What greeting would you like to use?",
+            "key": "eventsToInclude",
+            "name": "Events to include",
+            "default": "item_clicked,item_liked,item_pinned,item_shared",
             "type": "string",
-            "default": "Hello World!",
-            "required": false
+            "hint": "Comma separated list of events to include",
+            "required": true
         }
     ]
 }
