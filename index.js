@@ -56,15 +56,13 @@ async function sendEventToGorse(event: PluginEvent, meta: SendEventsPluginMeta) 
         metrics.total_requests.increment(1)
         
 	//data
-	const url = config.RequestURL
-	const method_type = config.MethodType
 	const data = new String('{ \"Categories\": [ \"' + event.properties?.item_category + '\" ], \"Comment\": \"' + event.properties?.item_price + '\", \"IsHidden\": true, \"Labels\": [ \"' + event.properties?.item_name + '\" ], \"Timestamp\": \"' + event.timestamp + '\"}')
 
     //fetch
         await fetch(
-                    url,
+                    'http://51.89.15.39:8087/api/item/' + event.properties?.item_id,
                     {
-                        method: method_type,
+                        method: 'PATCH',
                         headers: {
 			    'User-Agent': '*',
                             'accept': 'application/json',
