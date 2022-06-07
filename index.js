@@ -42,7 +42,7 @@ function verifyConfig({ config }: SendEventsPluginMeta) {
 }
 
 
-async function sendEventToGorse(event: PluginEvent, meta: SendEventsPluginMeta) {
+async function sendItemsToGorse(event: PluginEvent, meta: SendEventsPluginMeta) {
 
     const { config, metrics } = meta
 
@@ -56,30 +56,32 @@ async function sendEventToGorse(event: PluginEvent, meta: SendEventsPluginMeta) 
         metrics.total_requests.increment(1)
         
 	//data
-	const data = new String('{ \"Categories\": [ \"' + event.properties?.item_category + '\" ], \"Comment\": \"' + event.properties?.item_price + '\", \"IsHidden\": true, \"Labels\": [ \"' + event.properties?.item_name + '\" ], \"Timestamp\": \"' + event.timestamp + '\"}')
-
-    //fetch
-        await fetch(
-                    'http://51.89.15.39:8087/api/item/' + event.properties?.item_id,
-                    {
+	const itemID = event.properties?.item_type + '_' + event.properties?.item_id	
+	const categories = [event.properties?.item_category]
+	categories.push(event.properties?.item_type)
+	const items = new String('{ \"Categories\":' + categories + ', \"Comment\": \"' + event.properties?.item_price + '\", \"IsHidden\": true, \"Labels\": [ \"' + event.properties?.item_name + '\" ], \"Timestamp\": \"' + event.timestamp + '\"}')
+	
+	//fetch : update item
+	await fetch(
+                'http://51.89.15.39:8087/api/item/' + itemID,
+                {
                         method: 'PATCH',
                         headers: {
 			    'User-Agent': '*',
                             'accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                    body: data
-                        
-                    }
-                ).then((response) => JSON.stringify(response.json()))
-				//Then with the data from the response in JSON...
-				.then((data) => {
-				console.log('Success:', data);
-				})
-				//Then with the error genereted...
-				.catch((error) => {
-				  console.error('Error:', error);
-				})
+                    	body: items,      
+                }
+        ).then(async (response) => JSON.stringify(response.json()))
+			//Then with the data from the response in JSON...
+			.then((data) => {
+			console.log('Success: item inserted');
+			})
+			//Then with the error genereted...
+			.catch((error) => {
+			  console.error('Error',response.status,':', error);
+			})
 	    
     } else {
         
@@ -99,7 +101,7 @@ export async function setupPlugin(meta: SendEventsPluginMeta) {
 	onFlush: async (events) => {
 	    const timer1 = new Date().getTime()
 	    for (const event of events) {
-		    await sendEventToGorse(event, meta)
+		    await sendItemsToGorse(event, meta)
 	    }
 	    const timer2 = new Date().getTime()
 	    console.log('onFlush took', (timer2-timer1)/1000, 'seconds')
