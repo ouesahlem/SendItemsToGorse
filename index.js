@@ -59,13 +59,13 @@ async function sendItemsToGorse(event: PluginEvent, meta: SendEventsPluginMeta) 
 	const itemID = event.properties?.item_type + '_' + event.properties?.item_id	
 	/*const categories = [event.properties?.item_category]
 	categories.push(event.properties?.item_type)*/
-	const items = new String('{ \"Categories\":' + event.properties?.item_category + ', \"Comment\": \"' + event.properties?.item_price + '\", \"IsHidden\": true, \"Labels\": [ \"' + event.properties?.item_name + '\" ], \"Timestamp\": \"' + event.timestamp + '\"}')
+	const items = new String('{ \"Categories\":' + event.properties?.item_category + ', \"Comment\": \"' + event.properties?.item_price + '\", \"IsHidden\": true, \"ItemId\": \"' + itemID + '\"Labels\": [ \"' + event.properties?.item_name + '\" ], \"Timestamp\": \"' + event.timestamp + '\"}')
 	
 	//fetch : update item
 	await fetch(
-                'http://51.89.15.39:8087/api/item/' + itemID,
+                'http://51.89.15.39:8087/api/item/',
                 {
-                        method: 'PATCH',
+                        method: 'POST',
                         headers: {
 			    'User-Agent': '*',
                             'accept': 'application/json',
