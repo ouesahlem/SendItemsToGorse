@@ -60,6 +60,7 @@ async function sendItemsToGorse(event: PluginEvent, meta: SendEventsPluginMeta) 
 	/*const categories = [event.properties?.item_category]
 	categories.push(event.properties?.item_type)*/
 	const items = '{ \"Categories\": \"' + event.properties?.item_category + '\", \"Comment\": \"' + new String(event.properties?.item_price) + '\", \"IsHidden\": true, \"ItemId\": \"' + itemID + '\"Labels\": [ \"' + new String(event.properties?.item_name) + '\" ], \"Timestamp\": \"' + new String(event.timestamp) + '\"}'
+	console.log(event.properties?.item_category)
 	console.log(items)
 	
 	//fetch : update item
