@@ -56,10 +56,10 @@ async function sendItemsToGorse(event: PluginEvent, meta: SendEventsPluginMeta) 
         metrics.total_requests.increment(1)
         
 	//data
-	const itemID = event.properties?.item_type + '_' + event.properties?.item_id	
+	const itemID = new String(event.properties?.item_type + '_' + event.properties?.item_id)
 	/*const categories = [event.properties?.item_category]
 	categories.push(event.properties?.item_type)*/
-	const items = new String('{ \"Categories\": [ \"' + event.properties?.item_category + '\" ], \"Comment\": \"' + event.properties?.item_price + '\", \"IsHidden\": true, \"ItemId\": \"' + itemID + '\"Labels\": [ \"' + event.properties?.item_name + '\" ], \"Timestamp\": \"' + event.timestamp + '\"}')
+	const items = '{ \"Categories\": \"' + event.properties?.item_category + '\", \"Comment\": \"' + new String(event.properties?.item_price) + '\", \"IsHidden\": true, \"ItemId\": \"' + itemID + '\"Labels\": [ \"' + new String(event.properties?.item_name) + '\" ], \"Timestamp\": \"' + new String(event.timestamp) + '\"}')
 	console.log(items)
 	
 	//fetch : update item
