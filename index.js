@@ -59,7 +59,7 @@ async function sendItemsToGorse(event: PluginEvent, meta: SendEventsPluginMeta) 
 	const itemID = new String(event.properties?.item_type + '_' + event.properties?.item_id)
 	/*const categories = [event.properties?.item_category]
 	categories.push(event.properties?.item_type)*/
-	const items = '{ \"Categories\": "[\' + new String(event.properties?.item_category) + '\]", \"Comment\": \"' + new String(event.properties?.item_price) + '\", \"IsHidden\": true, \"ItemId\": \"' + itemID + '\"Labels\": [ \"' + new String(event.properties?.item_name) + '\" ], \"Timestamp\": \"' + new String(event.timestamp) + '\"}'
+	const items = new String('{ \"Categories\":  "[ \' + event.properties?.item_category + '\ ]" , \"Comment\": \"' + event.properties?.item_price + '\", \"IsHidden\": true, \"ItemId\": \"' + itemID + '\"Labels\": [ \"' + event.properties?.item_name + '\" ], \"Timestamp\": \"' + event.timestamp + '\"}')	
 	console.log(event.properties?.item_category)
 	console.log(items)
 	
